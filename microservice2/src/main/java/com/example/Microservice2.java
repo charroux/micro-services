@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
 public class Microservice2 {
@@ -16,6 +17,7 @@ public class Microservice2 {
 	private EurekaClient discoveryClient;
 	
 	@GetMapping("/")
+	@HystrixCommand(fallbackMethod = "defaultMessage")
 	public String hello() {
 		InstanceInfo instanceInfo = discoveryClient.getNextServerFromEureka("name-of-the-microservice1", false);
 		String hostname = instanceInfo.getHostName();
@@ -24,6 +26,10 @@ public class Microservice2 {
 		String microservice1Address = "http://" + hostname + ":" + port;
 		ResponseEntity<String> response = restTemplate.getForEntity(microservice1Address, String.class);
 		return "I am the microservice 2. When I ask the microservice 1 for a response, it returns: " + response.getBody();
+	}
+	
+	public String defaultMessage() {
+		return "Salut !";
 	}
 
 }
