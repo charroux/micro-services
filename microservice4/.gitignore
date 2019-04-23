@@ -1,7 +1,9 @@
-HELP.md
 .gradle
 /build/
 !gradle/wrapper/gradle-wrapper.jar
+
+### Eclipse ###
+/bin
 
 ### STS ###
 .apt_generated
@@ -25,6 +27,3 @@ HELP.md
 /dist/
 /nbdist/
 /.nb-gradle/
-
-### VS Code ###
-.vscode/
